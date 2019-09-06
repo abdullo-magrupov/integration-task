@@ -1,0 +1,150 @@
+﻿@{
+    ViewBag.Title = "Upload";
+}
+
+<h4>Employee import</h4>
+
+<form id="uploader" enctype="multipart/form-data" style="margin-top: 20px;">
+    <div class="form-group">
+        <input type="file" class="input-box" id="fileInput" name="fileInput"  accept=".csv">
+    </div>
+    <button type="submit" class="btn btn-sm btn-primary">Upload</button>
+</form>
+
+<!--Grid table will be generated-->
+<div id="result" style="margin-top: 20px;">
+
+</div>
+
+<!-- Modal for upload waiting-->
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">           
+            <div class="modal-body">
+                <h3 style="text-align: center;">Please Wait! Uploading...</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.getElementById('uploader').onsubmit = function (e) {
+        e.preventDefault();
+
+        let formData = new FormData();
+        let fileInput = document.getElementById('fileInput');
+
+        // Check if file is selected
+        if (fileInput.files.length === 0) {
+            alert("Please select the file!");
+            return;
+        }
+
+        formData.append(fileInput.files[0].name, fileInput.files[0]);
+
+        //Creating an XMLHttpRequest and sending
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', '/Home/UploadFile');
+        xhr.send(formData);
+
+        $('#uploadModal').modal('show');
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                $('#uploadModal').modal('hide');
+
+                if (xhr.status === 200) {
+                    const employees = JSON.parse(xhr.response);
+                    generateResult(employees);
+                } else {
+                    alert(xhr.responseText);
+                    generateResult([]);
+                }               
+            }
+        }
+    }
+
+    // Appends the result grid table to the DOM
+    function generateResult(employees) {
+        let result = document.querySelector("#result");
+        result.innerHTML = '';
+
+        let resultCount = document.createElement("p")
+        resultCount.style = "color: green;";
+        resultCount.innerText = employees.length + " rows were successfully processed!"
+        result.appendChild(resultCount);
+        
+        // Generate table grid if there was successful rows
+        if (employees.length > 0) {
+            let container = document.createElement('div');
+            container.classList.add('table-responsive');
+
+            let table = document.createElement('table');
+            table.classList.add('table');
+            table.classList.add('table-hover');
+
+            let theader = document.createElement('thead')
+            let header = document.createElement('tr');
+
+            const headerNames = ['Id',
+                                 'Payroll number',
+                                 'First name',
+                                 'Last name',
+                                 'DOB',
+                                 'Phone',
+                                 'Mobile',
+                                 'Primary address',
+                                 'Secondary adress',
+                                 'Post code',
+                                 'Email',
+                                 'Start date'];
+
+            headerNames.forEach(x => {
+                let col = document.createElement('th');
+                col.innerText = x;
+                header.appendChild(col);
+            });
+
+            theader.appendChild(header);
+            table.appendChild(theader);
+
+            const attributes = ['Id',
+                                'PayrollNumber',
+                                'FirstName',
+                                'LastName',
+                                'DateOfBirth',
+                                'PhoneNumber',
+                                'MobileNumber',
+                                'PrimaryAddress',
+                                'SecondaryAddress',
+                                'PostCode',
+                                'Email',
+                                'StartDate'];
+
+            let tbody = document.createElement('tbody');
+
+            employees.forEach(x => {
+                let row = document.createElement('tr');
+
+                attributes.forEach(z => {
+                    let col = document.createElement('td');
+
+                    if (z === 'DateOfBirth' || z === 'StartDate') {
+                        col.innerText = new Date(parseInt(x[z].substr(6))).toLocaleDateString();
+                    } else {
+                        col.innerText = x[z];
+                    }
+
+                    row.appendChild(col);
+                });
+
+                tbody.appendChild(row);
+            });
+
+            table.appendChild(tbody);
+            container.appendChild(table);
+            result.appendChild(container);
+        }
+    }
+</script>

@@ -1,0 +1,10 @@
+C:\Users\student\Desktop\synel\synel\Synel.Web\Synel.DAL\bin\Debug\Synel.DAL.dll.config
+C:\Users\student\Desktop\synel\synel\Synel.Web\Synel.DAL\bin\Debug\Synel.DAL.dll
+C:\Users\student\Desktop\synel\synel\Synel.Web\Synel.DAL\bin\Debug\Synel.DAL.pdb
+C:\Users\student\Desktop\synel\synel\Synel.Web\Synel.DAL\bin\Debug\EntityFramework.dll
+C:\Users\student\Desktop\synel\synel\Synel.Web\Synel.DAL\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\student\Desktop\synel\synel\Synel.Web\Synel.DAL\bin\Debug\EntityFramework.xml
+C:\Users\student\Desktop\synel\synel\Synel.Web\Synel.DAL\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\student\Desktop\synel\synel\Synel.Web\Synel.DAL\obj\Debug\Synel.DAL.dll
+C:\Users\student\Desktop\synel\synel\Synel.Web\Synel.DAL\obj\Debug\Synel.DAL.pdb
+C:\Users\student\Desktop\synel\synel\Synel.Web\Synel.DAL\obj\Debug\Synel.DAL.csprojResolveAssemblyReference.cache
